@@ -4,9 +4,14 @@ import (
 	"fmt"
 	"forum/forum"
 	"log"
+	"net"
 	"net/http"
 	"os/exec"
 )
+
+func hanleConn(conn net.Conn) {
+
+}
 
 func main() {
 	forum.InitDB()
@@ -15,16 +20,26 @@ func main() {
 	// forum.ClearComments()
 	exec.Command("xdg-open", "http://localhost:8080/").Start()
 
-	http.Handle("/assets/", http.StripPrefix("/assets", http.FileServer(http.Dir("./assets"))))
-	http.HandleFunc("/", forum.HomeHandler)
-	http.HandleFunc("/login", forum.LoginHandler)
-	http.HandleFunc("/register", forum.RegisterHandler)
-	http.HandleFunc("/logout", forum.LogoutHandler)
-	http.HandleFunc("/postpage", forum.PostPageHandler)
+	mux := http.NewServeMux()
+	mux.Handle("/assets/", http.StripPrefix("/assets", http.FileServer(http.Dir("./assets"))))
+	mux.HandleFunc("/", forum.HomeHandler)
+	mux.HandleFunc("/login", forum.LoginHandler)
+	mux.HandleFunc("/register", forum.RegisterHandler)
+	mux.HandleFunc("/logout", forum.LogoutHandler)
+	mux.HandleFunc("/postpage", forum.PostPageHandler)
 	// http.HandleFunc("/delete", forum.DeleteHandler)
 	fmt.Println("Starting server at port 8080")
-	err := http.ListenAndServe(":8080", nil)
+
+	ln, err := net.Listen("tcp", ":8080")
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer ln.Close()
+	// limit rate here?
+	http.Serve(ln, mux)
+
+	// err := http.ListenAndServe(":8080", nil)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 }

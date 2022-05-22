@@ -50,10 +50,19 @@ package main
 // 	httpsServer.TLSConfig = &tls.Config{GetCertificate: certMan.GetCertificate}
 
 // 	fmt.Println("Starting server at port 443")
-// 	// forum.RateLimit()
-// 	// err := httpsServer.ListenAndServe()
-// 	err := httpsServer.ListenAndServeTLS("", "")
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
+// ln, err := net.Listen("tcp", ":443")
+// if err != nil {
+// 	log.Fatal(err)
+// }
+// defer ln.Close()
+// //rate limit here?
+// httpsServer.ServeTLS(ln, "", "")
+
+// fmt.Println("Starting server at port 443")
+// // forum.RateLimit()
+// // err := httpsServer.ListenAndServe()
+// err := httpsServer.ListenAndServeTLS("", "")
+// if err != nil {
+// 	log.Fatal(err)
+// }
 // }
