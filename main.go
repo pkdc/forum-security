@@ -7,10 +7,12 @@ import (
 	"net"
 	"net/http"
 	"os/exec"
+	"time"
 )
 
-func hanleConn(conn net.Conn) {
-
+type token struct {
+	con net.Conn
+	t   time.Time
 }
 
 func main() {
@@ -37,6 +39,16 @@ func main() {
 	defer ln.Close()
 	// limit rate here?
 	http.Serve(ln, mux)
+
+	for {
+		conn, err := ln.Accept()
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer conn.Close()
+		// or here?
+		// then somehow call mux with go routine?
+	}
 
 	// err := http.ListenAndServe(":8080", nil)
 	// if err != nil {
