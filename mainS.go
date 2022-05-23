@@ -5,6 +5,7 @@ package main
 // 	"fmt"
 // 	"forum/forum"
 // 	"log"
+// 	"net"
 // 	"net/http"
 
 // 	"golang.org/x/crypto/acme/autocert"
@@ -15,7 +16,6 @@ package main
 // 	forum.ClearUsers()
 // 	forum.ClearPosts()
 // 	forum.ClearComments()
-// 	// exec.Command("xdg-open", "http://localhost:8080/").Start()
 
 // 	dir := "./certs"
 // 	certMan := &autocert.Manager{
@@ -37,11 +37,11 @@ package main
 
 // 	mux := http.NewServeMux()
 // 	mux.Handle("/assets/", http.StripPrefix("/assets", http.FileServer(http.Dir("./assets"))))
-// 	mux.HandleFunc("/", forum.HomeHandler)
-// 	mux.HandleFunc("/login", forum.LoginHandler)
-// 	mux.HandleFunc("/register", forum.RegisterHandler)
+// 	mux.Handle("/", forum.RateLimiter(forum.HomeHandler))
+// 	mux.Handle("/login", forum.RateLimiter(forum.LoginHandler))
+// 	mux.Handle("/register", forum.RateLimiter(forum.RegisterHandler))
 // 	mux.HandleFunc("/logout", forum.LogoutHandler)
-// 	mux.HandleFunc("/postpage", forum.PostPageHandler)
+// 	mux.Handle("/postpage", forum.RateLimiter(forum.PostPageHandler))
 
 // 	httpsServer := forum.MakeServer()
 // 	httpsServer.Addr = ":443"
@@ -50,13 +50,12 @@ package main
 // 	httpsServer.TLSConfig = &tls.Config{GetCertificate: certMan.GetCertificate}
 
 // 	fmt.Println("Starting server at port 443")
-// ln, err := net.Listen("tcp", ":443")
-// if err != nil {
-// 	log.Fatal(err)
-// }
-// defer ln.Close()
-// //rate limit here?
-// httpsServer.ServeTLS(ln, "", "")
+// 	ln, err := net.Listen("tcp", ":443")
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+// 	defer ln.Close()
+// 	httpsServer.ServeTLS(ln, "", "")
 
 // fmt.Println("Starting server at port 443")
 // // forum.RateLimit()

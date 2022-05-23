@@ -6,8 +6,9 @@ import (
 	"time"
 )
 
-// func ReqLimiter(f func(http.ResponseWriter, *http.Request)) http.Handler {
-func RateLimiter(h http.Handler) http.Handler {
+func RateLimiter(f func(http.ResponseWriter, *http.Request)) http.Handler {
+	h := http.HandlerFunc(f)
+	// func RateLimiter(h http.Handler) http.Handler {
 	// limiter := make(chan struct{}, 2)
 	burstyLimiter := make(chan time.Time, 3)
 	for i := 0; i < 3; i++ {
@@ -21,7 +22,6 @@ func RateLimiter(h http.Handler) http.Handler {
 		}
 	}()
 
-	// h := http.HandlerFunc(f)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// limiter <- struct{}{}
 		// defer func() { <-limiter }()
