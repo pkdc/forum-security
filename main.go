@@ -23,7 +23,7 @@ func main() {
 
 	mux := http.NewServeMux()
 	mux.Handle("/assets/", http.StripPrefix("/assets", http.FileServer(http.Dir("./assets"))))
-	mux.Handle("/", forum.ReqLimiter(http.HandlerFunc(forum.HomeHandler)))
+	mux.Handle("/", forum.RateLimiter(http.HandlerFunc(forum.HomeHandler)))
 	mux.HandleFunc("/login", forum.LoginHandler)
 	mux.HandleFunc("/register", forum.RegisterHandler)
 	mux.HandleFunc("/logout", forum.LogoutHandler)
