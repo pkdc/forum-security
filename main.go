@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"forum/forum"
 	"log"
-	"net"
 	"net/http"
 
 	"golang.org/x/crypto/acme/autocert"
@@ -56,16 +55,7 @@ func main() {
 	// httpsServer.TLSConfig = &tls.Config{GetCertificate: certMan.GetCertificate}
 
 	fmt.Println("Starting server at port 443")
-	ln, err := net.Listen("tcp", ":443")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer ln.Close()
-	httpsServer.ServeTLS(ln, "", "")
-
-	fmt.Println("Starting server at port 443")
-	// err := httpsServer.ListenAndServe()
-	err = httpsServer.ListenAndServeTLS("", "")
+	err := httpsServer.ListenAndServeTLS("", "")
 	if err != nil {
 		log.Fatal(err)
 	}
