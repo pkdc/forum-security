@@ -28,7 +28,6 @@ func main() {
 		httpServer := forum.MakeServer()
 		httpServer.Addr = ":80"
 		// httpServer.Addr = ":8080"
-		httpServer
 		httpServer.Handler = certMan.HTTPHandler(nil)
 		err := httpServer.ListenAndServe()
 		if err != nil {
@@ -41,7 +40,7 @@ func main() {
 	mux.Handle("/", forum.RateLimiter(forum.HomeHandler))
 	mux.Handle("/login", forum.RateLimiter(forum.LoginHandler))
 	mux.Handle("/register", forum.RateLimiter(forum.RegisterHandler))
-	mux.HandleFunc("/logout", forum.RateLimiter(forum.LogoutHandler))
+	mux.Handle("/logout", forum.RateLimiter(forum.LogoutHandler))
 	mux.Handle("/postpage", forum.RateLimiter(forum.PostPageHandler))
 
 	httpsServer := forum.MakeServer()
