@@ -16,7 +16,7 @@ func main() {
 	// forum.ClearPosts()
 	// forum.ClearComments()
 
-	dir := "./certs"
+	dir := "./forum/certs"
 	certMan := &autocert.Manager{
 		Prompt: autocert.AcceptTOS,
 		// HostPolicy: autocert.HostWhitelist("www.domain.com"),
@@ -47,7 +47,7 @@ func main() {
 
 	var hello tls.ClientHelloInfo
 	hello.ServerName = "instance-1@elephorum.com"
-	fmt.Printf("https ClientHelloInfo: %s", hello.ServerName)
+	fmt.Printf("https ClientHelloInfo: %s\n", hello.ServerName)
 	certMan.GetCertificate(&hello)
 	// how to pass hello into httpsServer?
 	// use func (*Manager) TLSConfig¶?
