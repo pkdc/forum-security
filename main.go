@@ -48,9 +48,9 @@ func main() {
 	httpsServer.Addr = ":443"
 	// httpsServer.Addr = ":8080"
 	httpsServer.Handler = mux
-		hello := &tls.ClientHelloInfo{
-			ServerName: "instance-1@elephorum.com",
-		}
+	hello := &tls.ClientHelloInfo{
+		ServerName: "instance-1@elephorum.com",
+	}
 	httpsServer.TLSConfig = &tls.Config{GetCertificate: certMan.GetCertificate(hello)}
 
 	fmt.Println("Starting server at port 443")
@@ -61,10 +61,10 @@ func main() {
 	defer ln.Close()
 	httpsServer.ServeTLS(ln, "", "")
 
-fmt.Println("Starting server at port 443")
-// err := httpsServer.ListenAndServe()
-err := httpsServer.ListenAndServeTLS("", "")
-if err != nil {
-	log.Fatal(err)
+	fmt.Println("Starting server at port 443")
+	// err := httpsServer.ListenAndServe()
+	err = httpsServer.ListenAndServeTLS("", "")
+	if err != nil {
+		log.Fatal(err)
+	}
 }
-// }
