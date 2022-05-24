@@ -52,7 +52,7 @@ func main() {
 	// how to pass hello into httpsServer?
 	// use func (*Manager) TLSConfig¶?
 	httpsServer.Handler = mux
-	// httpsServer.TLSConfig = &tls.Config{GetCertificate: certMan.GetCertificate}
+	httpsServer.TLSConfig = &tls.Config{GetCertificate: certMan.GetCertificate}
 
 	fmt.Println("Starting server at port 443")
 	err := httpsServer.ListenAndServeTLS("", "")
