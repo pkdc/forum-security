@@ -25,9 +25,13 @@ func RateLimiter(f func(http.ResponseWriter, *http.Request)) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// limiter <- struct{}{}
 		// defer func() { <-limiter }()
-		fmt.Printf("Please wait until the traffic is clear...\n")
-		tL := <-burstyLimiter
-		h.ServeHTTP(w, r)
-		fmt.Printf("Serving req at %v\n", tL)
+		fmt.Printf("Please try again when the traffic is cleared...\n")
+		select {
+		case tL := <-burstyLimiter:
+			h.ServeHTTP(w, r)
+			fmt.Printf("Serving req at %v\n", tL)
+		default:
+			fmt.Fprintf(w, "<h1>Please try again when the traffic is cleared...<h1>")
+		}
 	})
 }
