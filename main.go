@@ -27,8 +27,8 @@ func main() {
 	go func() {
 		httpServer := forum.MakeServer()
 		httpServer.Addr = ":80"
-		// httpServer.Addr = ":8080"
 		httpServer.Handler = certMan.HTTPHandler(nil)
+
 		err := httpServer.ListenAndServe()
 		if err != nil {
 			log.Fatal(err)
@@ -45,12 +45,13 @@ func main() {
 
 	httpsServer := forum.MakeServer()
 	httpsServer.Addr = ":443"
-	// httpsServer.Addr = ":8080"
+
+	var hello tls.ClientHelloInfo
+	hello.ServerName = "instance-1@elephorum.com"
+	fmt.Printf("https ClientHelloInfo: %s", hello.ServerName)
+	// how to pass hello into httpsServer?
 	httpsServer.Handler = mux
-	hello := &tls.ClientHelloInfo{
-		ServerName: "instance-1@elephorum.com",
-	}
-	httpsServer.TLSConfig = &tls.Config{GetCertificate: certMan.GetCertificate(hello)}
+	httpsServer.TLSConfig = &tls.Config{GetCertificate: certMan.GetCertificate}
 
 	fmt.Println("Starting server at port 443")
 	ln, err := net.Listen("tcp", ":443")
