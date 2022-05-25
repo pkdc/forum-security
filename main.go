@@ -12,7 +12,7 @@ import (
 
 func MyGetCertificate(man *autocert.Manager) func(*tls.ClientHelloInfo) (*tls.Certificate, error) {
 	return func(hello *tls.ClientHelloInfo) (*tls.Certificate, error) {
-		hello.ServerName = "instance-1@elephorum.com"
+		hello.ServerName = "nic0@elephorum.com"
 		fmt.Printf("https ClientHelloInfo: %s\n", hello.ServerName)
 		// cipher suite
 		return man.GetCertificate(hello)
