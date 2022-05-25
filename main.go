@@ -10,6 +10,15 @@ import (
 	"golang.org/x/crypto/acme/autocert"
 )
 
+func MyGetCertificate(man *autocert.Manager) func(*tls.ClientHelloInfo) (*tls.Certificate, error) {
+	return func(hello *tls.ClientHelloInfo) (*tls.Certificate, error) {
+		hello.ServerName = "instance-1@elephorum.com"
+		fmt.Printf("https ClientHelloInfo: %s\n", hello.ServerName)
+		// cipher suite
+		return man.GetCertificate(hello)
+	}
+}
+
 func main() {
 	forum.InitDB()
 	// forum.ClearUsers()
@@ -45,15 +54,13 @@ func main() {
 	httpsServer := forum.MakeServer()
 	httpsServer.Addr = ":443"
 
-	var hello tls.ClientHelloInfo
-	// hello.ServerName = "instance-1@elephorum.com"
-	// manTlsConfig := certMan.TLSConfig()
-	// manTlsConfig.GetCertificate = certMan.GetCertificate
-	fmt.Printf("https ClientHelloInfo: %s\n", hello.ServerName)
-	// certMan.GetCertificate(&hello)
 	// how to pass hello into httpsServer?
 	httpsServer.Handler = mux
-	httpsServer.TLSConfig = &tls.Config{GetCertificate: certMan.GetCertificate}
+
+	// write a custom GetCertificate func and put a ServerName into the ClientHelloInfo
+	manTlsConfig := certMan.TLSConfig()
+	manTlsConfig.GetCertificate = MyGetCertificate(certMan)
+	httpsServer.TLSConfig = *&manTlsConfig
 
 	fmt.Println("Starting server at port 443")
 	err := httpsServer.ListenAndServeTLS("", "")
