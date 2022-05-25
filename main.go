@@ -46,11 +46,12 @@ func main() {
 	httpsServer.Addr = ":443"
 
 	var hello tls.ClientHelloInfo
-	hello.ServerName = "instance-1@elephorum.com"
+	// hello.ServerName = "instance-1@elephorum.com"
+	// manTlsConfig := certMan.TLSConfig()
+	// manTlsConfig.GetCertificate = certMan.GetCertificate
 	fmt.Printf("https ClientHelloInfo: %s\n", hello.ServerName)
-	certMan.GetCertificate(&hello)
+	// certMan.GetCertificate(&hello)
 	// how to pass hello into httpsServer?
-	// use func (*Manager) TLSConfig¶?
 	httpsServer.Handler = mux
 	httpsServer.TLSConfig = &tls.Config{GetCertificate: certMan.GetCertificate}
 
