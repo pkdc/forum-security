@@ -59,8 +59,9 @@ func main() {
 
 	// write a custom GetCertificate func and put a ServerName into the ClientHelloInfo
 	manTlsConfig := certMan.TLSConfig()
+	fmt.Printf("https TlsConfig's ServerName: %s\n", manTlsConfig.ServerName)
 	manTlsConfig.GetCertificate = MyGetCertificate(certMan)
-	httpsServer.TLSConfig = *&manTlsConfig
+	httpsServer.TLSConfig = manTlsConfig
 
 	fmt.Println("Starting server at port 443")
 	err := httpsServer.ListenAndServeTLS("", "")
