@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto/tls"
 	"fmt"
 	"forum/forum"
 	"log"
@@ -57,12 +58,12 @@ func main() {
 	httpsServer.Handler = mux
 
 	// write a custom GetCertificate func and put a ServerName into the ClientHelloInfo
-	manTlsConfig := certMan.TLSConfig()
+	// manTlsConfig := certMan.TLSConfig()
 	// manTlsConfig.ServerName = "www.elephorum.com"
-	fmt.Printf("https TlsConfig's ServerName: %s\n", manTlsConfig.ServerName)
+	// fmt.Printf("https TlsConfig's ServerName: %s\n", manTlsConfig.ServerName)
 	// manTlsConfig.GetCertificate = MyGetCertificate(certMan)
 	// httpsServer.TLSConfig = manTlsConfig
-	httpsServer.TLSConfig.GetCertificate = certMan.GetCertificate
+	httpsServer.TLSConfig = &tls.Config{GetCertificate: certMan.GetCertificate}
 
 	fmt.Println("Starting server at port 443")
 	err := httpsServer.ListenAndServeTLS("", "")
