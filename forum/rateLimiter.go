@@ -16,7 +16,7 @@ func RateLimiter(f func(http.ResponseWriter, *http.Request)) http.Handler {
 	}
 
 	go func() {
-		filler := time.NewTicker(5000 * time.Millisecond)
+		filler := time.NewTicker(200 * time.Millisecond)
 		for t := range filler.C {
 			burstyLimiter <- t
 		}
