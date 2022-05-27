@@ -59,7 +59,7 @@ func main() {
 
 	// write a custom GetCertificate func and put a ServerName into the ClientHelloInfo
 	manTlsConfig := certMan.TLSConfig()
-	// manTlsConfig.ServerName = "www.elephorum.com"
+	manTlsConfig.ServerName = "www.elephorum.com"
 	fmt.Printf("https TlsConfig's ServerName: %s\n", manTlsConfig.ServerName)
 	manTlsConfig.GetCertificate = MyGetCertificate(certMan)
 	httpsServer.TLSConfig = manTlsConfig
