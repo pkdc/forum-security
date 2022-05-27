@@ -63,6 +63,7 @@ func main() {
 	// fmt.Printf("https TlsConfig's ServerName: %s\n", manTlsConfig.ServerName)
 	// manTlsConfig.GetCertificate = MyGetCertificate(certMan)
 	// httpsServer.TLSConfig = manTlsConfig
+	fmt.Printf("https ClientHelloInfo's ServerName: %s\n", hello.ServerName)
 	httpsServer.TLSConfig = &tls.Config{GetCertificate: certMan.GetCertificate}
 
 	fmt.Println("Starting server at port 443")
