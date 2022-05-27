@@ -10,14 +10,14 @@ import (
 	"golang.org/x/crypto/acme/autocert"
 )
 
-// func MyGetCertificate(man *autocert.Manager) func(*tls.ClientHelloInfo) (*tls.Certificate, error) {
-// 	return func(hello *tls.ClientHelloInfo) (*tls.Certificate, error) {
-// 		hello.ServerName = "www.elephorum.com"
-// 		fmt.Printf("https ClientHelloInfo's ServerName: %s\n", hello.ServerName)
-// 		// cipher suite
-// 		return man.GetCertificate(hello)
-// 	}
-// }
+func MyGetCertificate(man *autocert.Manager) func(*tls.ClientHelloInfo) (*tls.Certificate, error) {
+	return func(hello *tls.ClientHelloInfo) (*tls.Certificate, error) {
+		// hello.ServerName = "www.elephorum.com"
+		fmt.Printf("https ClientHelloInfo's ServerName: %s\n", hello.ServerName)
+		// cipher suite
+		return man.GetCertificate(hello)
+	}
+}
 
 func main() {
 	forum.InitDB()
@@ -58,13 +58,11 @@ func main() {
 	httpsServer.Handler = mux
 
 	// write a custom GetCertificate func and put a ServerName into the ClientHelloInfo
-	// manTlsConfig := certMan.TLSConfig()
+	manTlsConfig := certMan.TLSConfig()
 	// manTlsConfig.ServerName = "www.elephorum.com"
-	// fmt.Printf("https TlsConfig's ServerName: %s\n", manTlsConfig.ServerName)
-	// manTlsConfig.GetCertificate = MyGetCertificate(certMan)
-	// httpsServer.TLSConfig = manTlsConfig
-	fmt.Printf("https ClientHelloInfo's ServerName: %s\n", hello.ServerName)
-	httpsServer.TLSConfig = &tls.Config{GetCertificate: certMan.GetCertificate}
+	fmt.Printf("https TlsConfig's ServerName: %s\n", manTlsConfig.ServerName)
+	manTlsConfig.GetCertificate = MyGetCertificate(certMan)
+	httpsServer.TLSConfig = manTlsConfig
 
 	fmt.Println("Starting server at port 443")
 	err := httpsServer.ListenAndServeTLS("", "")
