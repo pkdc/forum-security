@@ -5,6 +5,7 @@ I have used the autocert library, to get the SSL certificates from Let's Encrypt
 I have also implemented a rate limiter (not allowed to use exteranl library), to limit the no. of request to the server in a given time interval.
 The rate limiter functions by first filling with 3 tokens, then it refills one by every 0.2s (or longer for demo purpose).
 The passwords are hashed, and a uuid is used for the session cookies (from forum).
+There are other optionals for forum, and I am responsible to do the forum-security optional.
 
 forum-security
 Objectives
