@@ -1,7 +1,6 @@
 package main
 
 import (
-	"crypto/tls"
 	"fmt"
 	"forum/forum"
 	"log"
@@ -10,14 +9,15 @@ import (
 	"golang.org/x/crypto/acme/autocert"
 )
 
-func MyGetCertificate(man *autocert.Manager) func(*tls.ClientHelloInfo) (*tls.Certificate, error) {
-	return func(hello *tls.ClientHelloInfo) (*tls.Certificate, error) {
-		hello.ServerName = "www.elephorum.com"
-		fmt.Printf("https ClientHelloInfo's ServerName: %s\n", hello.ServerName)
-		// cipher suite
-		return man.GetCertificate(hello)
-	}
-}
+// func MyGetCertificate(man *autocert.Manager) func(*tls.ClientHelloInfo) (*tls.Certificate, error) {
+// 	return func(hello *tls.ClientHelloInfo) (*tls.Certificate, error) {
+// 		hello.ServerName = "www.elephorum.com"
+// 		hello.CipherSuites = [TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256]
+// 		fmt.Printf("https ClientHelloInfo's ServerName: %s\n", hello.ServerName)
+// 		// cipher suite
+// 		return man.GetCertificate(hello)
+// 	}
+// }
 
 func main() {
 	forum.InitDB()
@@ -32,6 +32,7 @@ func main() {
 		// HostPolicy: nil,
 		Cache: autocert.DirCache(dir),
 	}
+	// httpServer is to communicate to the CA to get the certs
 	go func() {
 		httpServer := forum.MakeServer()
 		httpServer.Addr = ":80"
@@ -51,17 +52,18 @@ func main() {
 	mux.Handle("/logout", forum.RateLimiter(forum.LogoutHandler))
 	mux.Handle("/postpage", forum.RateLimiter(forum.PostPageHandler))
 
+	// create https server to serve content of our website
 	httpsServer := forum.MakeServer()
 	httpsServer.Addr = ":443"
-
-	// how to pass hello into httpsServer?
 	httpsServer.Handler = mux
 
-	// write a custom GetCertificate func and put a ServerName into the ClientHelloInfo
+	// write a custom GetCertificate func and put a ServerName and
+	// a list of cipher suites into the ClientHelloInfo
 	manTlsConfig := certMan.TLSConfig()
 	manTlsConfig.ServerName = "www.elephorum.com"
 	fmt.Printf("https TlsConfig's ServerName: %s\n", manTlsConfig.ServerName)
-	manTlsConfig.GetCertificate = MyGetCertificate(certMan)
+	// manTlsConfig.GetCertificate = MyGetCertificate(certMan)
+	manTlsConfig.GetCertificate = certMan.GetCertificate
 	httpsServer.TLSConfig = manTlsConfig
 
 	fmt.Println("Starting server at port 443")
