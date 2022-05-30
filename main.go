@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto/tls"
 	"fmt"
 	"forum/forum"
 	"log"
@@ -32,6 +33,7 @@ func main() {
 		// HostPolicy: nil,
 		Cache: autocert.DirCache(dir),
 	}
+
 	// httpServer is to communicate to the CA to get the certs
 	go func() {
 		httpServer := forum.MakeServer()
@@ -58,12 +60,15 @@ func main() {
 	httpsServer.Handler = mux
 
 	// write a custom GetCertificate func and put a ServerName and
-	// a list of cipher suites into the ClientHelloInfo
+	// a list of cipher suites into the server hello msg
 	manTlsConfig := certMan.TLSConfig()
 	manTlsConfig.ServerName = "www.elephorum.com"
-	fmt.Printf("https TlsConfig's ServerName: %s\n", manTlsConfig.ServerName)
-	// manTlsConfig.GetCertificate = MyGetCertificate(certMan)
 	manTlsConfig.GetCertificate = certMan.GetCertificate
+	manTlsConfig.CipherSuites = []uint16{
+		tls.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+		tls.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+		tls.TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
+	}
 	httpsServer.TLSConfig = manTlsConfig
 
 	fmt.Println("Starting server at port 443")
