@@ -5,7 +5,7 @@
 {{range .Posts}}
 <div class="forum-postPage">
     <p class="titleofPost">{{.Title}}</p>
-    <p class="contentofPost">{{.Content}}</p>
+    <p class="contentofPost" style="white-space: pre-line">{{.Content}}</p>
     <form action="/" method="GET">
         <input type="submit" name="categoryOfPost" class="categoryclass" value={{.Category}}>
         </form>
