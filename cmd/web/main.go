@@ -5,6 +5,7 @@ import (
 	"forum/forum"
 	"log"
 	"net/http"
+	"os"
 )
 
 func main() {
@@ -24,9 +25,9 @@ func main() {
 	// http.HandleFunc("/delete", forum.DeleteHandler)
 	fmt.Println("Starting server")
 
-	err := http.ListenAndServe(":8080", mux)
-	// port := os.Getenv("PORT")
-	// err := http.ListenAndServe(":"+port, mux)
+	// err := http.ListenAndServe(":8080", mux)
+	port := os.Getenv("PORT")
+	err := http.ListenAndServe(":"+port, mux)
 	if err != nil {
 		log.Fatal(err)
 	}
