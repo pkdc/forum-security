@@ -49,8 +49,9 @@ func filCatDisplayPostsAndComments(filCat string) []post {
 		rows.Scan(&(po.PostID), &(po.Author), &(po.Image), &(po.Title), &(po.Content), &(po.Category), &(po.PostTime), &(po.Likes), &(po.Dislikes), &(po.IPs))
 		po.PostTimeStr = po.PostTime.Format("Mon 02-01-2006 15:04:05")
 		// fmt.Printf("Display Post: %d, by %s, title: %s, content: %s, in %s, at %v, with %d likes, and %d dislikes\n", po.PostID, po.Author, po.Title, po.Content, po.Category, po.PostTimeStr, po.Likes, po.Dislikes)
-		po.Category = strings.Trim(po.Category, "(")
-		po.Category = strings.Trim(po.Category, ")")
+		po.Category = strings.Replace(po.Category, "(", "", -1)
+		po.Category = strings.Replace(po.Category, ")", ", ", -1)
+		po.Category = strings.Trim(po.Category, ", ")
 		po.Comments = displayComments(po.PostID)
 		pos = append(pos, po)
 	}
@@ -71,8 +72,9 @@ func filAuthorDisplayPostsAndComments(filAuthor string) []post {
 		po.PostTimeStr = po.PostTime.Format("Mon 02-01-2006 15:04:05")
 		// fmt.Printf("Display Post: %d, by %s, title: %s, content: %s, in %s, at %v, with %d likes, and %d dislikes\n", po.PostID, po.Author, po.Title, po.Content, po.Category, po.PostTimeStr, po.Likes, po.Dislikes)
 		po.Comments = displayComments(po.PostID)
-		po.Category = strings.Trim(po.Category, "(")
-		po.Category = strings.Trim(po.Category, ")")
+		po.Category = strings.Replace(po.Category, "(", "", -1)
+		po.Category = strings.Replace(po.Category, ")", ", ", -1)
+		po.Category = strings.Trim(po.Category, ", ")
 		pos = append(pos, po)
 	}
 	return pos
