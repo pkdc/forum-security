@@ -41,23 +41,30 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	category := []string{"Blockchain", "AI", "Cybersecurity", "Mobile Development", "Videogames"}
 	query.Get("category-filter")
 	if len(query) != 0 {
-		var badrequest bool = false
-		for i := 0; i < len(category); i++ {
-			if query.Get("category-filter") == category[i] {
+		catFilter := query.Get("category-filter")
+		authorFilter := query.Get("author-filter")
+		likedFilter := query.Get("liked-post")
+
+		// Allow empty filters (no selection = show all posts)
+		if catFilter != "" || authorFilter != "" || likedFilter != "" {
+			var badrequest bool = false
+			for i := 0; i < len(category); i++ {
+				if catFilter == category[i] {
+					badrequest = true
+				}
+			}
+			for i := 0; i < len(allForumUnames); i++ {
+				if authorFilter == allForumUnames[i] {
+					badrequest = true
+				}
+			}
+			if likedFilter == "liked-post" {
 				badrequest = true
 			}
-		}
-		for i := 0; i < len(allForumUnames); i++ {
-			if query.Get("author-filter") == allForumUnames[i] {
-				badrequest = true
+			if !badrequest {
+				http.Error(w, "400 Bad Request", 400)
+				return
 			}
-		}
-		if query.Get("liked-post") == "liked-post" {
-			badrequest = true
-		}
-		if !badrequest {
-			http.Error(w, "400 Bad Request", 400)
-			return
 		}
 	}
 	if r.Method != http.MethodGet && r.Method != http.MethodPost {

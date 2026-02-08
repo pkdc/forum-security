@@ -372,8 +372,18 @@ body > .commentInput {
   color: var(--color-secondary);
 }
 
-.dropdown:hover .dropdown-content {
+.dropdown.open .dropdown-content {
   display: block;
+}
+
+.drop-arrow {
+  display: inline-block;
+  transition: transform var(--transition-fast);
+  font-size: var(--text-3xl);
+}
+
+.dropdown.open .drop-arrow {
+  transform: rotate(180deg);
 }
 
 /* ============================================
@@ -636,6 +646,11 @@ input[type="radio"] {
   height: 18px;
   margin-right: var(--space-2);
   accent-color: var(--color-secondary);
+  cursor: pointer;
+}
+
+fieldset label {
+  display: inline;
   cursor: pointer;
 }
 
