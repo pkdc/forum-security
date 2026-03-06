@@ -22,14 +22,14 @@ func allForumUnames() []string {
 
 func AllForumUsers() []user {
 	var AllUsers []user
-	rows, err := db.Query("SELECT * FROM users GROUP BY username;")
+	rows, err := db.Query("SELECT username, image, email, access, loggedIn, likedPosts, dislikedPosts, likedComments2, dislikedComments2, likedComments FROM users GROUP BY username;")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer rows.Close()
 	for rows.Next() {
 		var usr user
-		rows.Scan(&(usr.Username), &(usr.Image), &(usr.Email), &(usr.Password), &(usr.Access), &(usr.LoggedIn), &(usr.LikedPost), &(usr.DislikedPost), &(usr.LikedComments2), &(usr.DislikedComments2), &(usr.LikedComments))
+		rows.Scan(&(usr.Username), &(usr.Image), &(usr.Email), &(usr.Access), &(usr.LoggedIn), &(usr.LikedPost), &(usr.DislikedPost), &(usr.LikedComments2), &(usr.DislikedComments2), &(usr.LikedComments))
 		AllUsers = append(AllUsers, usr)
 	}
 	return AllUsers

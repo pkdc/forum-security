@@ -1,7 +1,6 @@
 package forum
 
 import (
-	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -88,37 +87,12 @@ func regNewUser(w http.ResponseWriter, r *http.Request) {
 	defer stmt.Close()
 	stmt.Exec(uname, image, email, hash, 1, true, "", "", "", "", "")
 
-	// test
-	var u string
-	var i string
-	var e string
-	var p []byte
-	var a int
-	var l bool
-
-	rows, err = db.Query("SELECT * FROM users")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer rows.Close()
-	for rows.Next() {
-		rows.Scan(&u, &i, &e, &p, &a, &l)
-	}
-	fmt.Printf("uname: %s i: %s e: %s pw: %s, ac: %d, log: %t\n", u, i, e, p, a, l)
-
-	// forumUser.Username = uname
-	// forumUser.LoggedIn = true
-	// forumUser.Access = 1
-	// forumUser.Image = image
-
 	sid := uuid.NewV4()
 	http.SetCookie(w, &http.Cookie{
 		Name:   "session",
 		Value:  sid.String(),
 		MaxAge: 1800,
 	})
-	fmt.Printf("reg sid: %s\n", sid)
-	fmt.Printf("Reg and login as %s\n", uname)
 
 	stmt, err = db.Prepare("INSERT INTO sessions (sessionID, username) VALUES (?,?);")
 	if err != nil {

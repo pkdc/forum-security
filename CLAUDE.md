@@ -4,24 +4,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a **security-hardened web forum** written in Go, featuring HTTPS/TLS, rate limiting, session management, and bcrypt password hashing. The application is designed to run on both PaaS platforms (Heroku, Render, Railway, Fly.io, etc.) and VPS/bare metal servers with automatic environment detection.
+This is a **security-hardened web forum** written in Go, featuring HTTPS/TLS, rate limiting, session management, and bcrypt password hashing. The application is designed to run on both PaaS platforms and VPS/bare metal servers with automatic environment detection.
 
-## Build and Run
-
-```bash
-# Build the application
-go build -o forum ./cmd/web
-
-# Run locally (HTTP mode)
-PORT=8080 ./forum
-
-# Run with autocert (requires VPS with ports 80/443 and domain)
-sudo USE_AUTOCERT=true DOMAIN=yourdomain.com ./forum
-
-# Build and run with Docker
-docker build -t forum .
-docker run -p 8080:8080 -e PORT=8080 forum
-```
 
 ## Database
 
@@ -39,7 +23,7 @@ The application uses **SQLite** with the database file at `./forum.db`. The sche
 
 The application automatically detects the environment:
 
-**PaaS Mode (Heroku, Render, etc.):**
+**PaaS Mode:**
 - Triggered when `PORT` env var exists and `USE_AUTOCERT != "true"`
 - Listens on HTTP only (platform handles TLS termination at edge/load balancer)
 - Uses `runOnPaaS()` function
