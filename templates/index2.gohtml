@@ -1,113 +1,130 @@
 {{template "header2"}}
-<h1>Welcome back {{.Userinfo.Username}}!</h1>
 
+<div class="page-wrap">
 
-
-
-<form method="post" class="forum-form">
-    <div>
-        <label for="title">Title:</label>
-        <input type="text" id="title" name="postTitle" minlength="3" maxlength="50" required>
+  <!-- Hero (compact for logged-in) -->
+  <section class="hero hero--compact">
+    <div class="hero__inner">
+      <div class="hero__text">
+        <h1 class="hero__title">Welcome back, <span class="hero__brand">{{.Userinfo.Username}}</span></h1>
+        <p class="hero__tagline">What's on your mind today?</p>
+      </div>
+      <div class="hero__graphic hero__graphic--sm" aria-hidden="true">
+        <div class="hero__ring hero__ring--1"></div>
+        <div class="hero__ring hero__ring--2"></div>
+        <div class="hero__dot"></div>
+      </div>
     </div>
-    <div>
-        <label for="content">Content</label>
-        <textarea name="postContent" id="content" cols="30" rows="6" minlength="5" maxlength="1000" required></textarea>
+  </section>
+
+  <!-- Compose -->
+  <section class="compose" id="compose">
+    <button class="compose__toggle" type="button" onclick="document.getElementById('compose').classList.toggle('compose--open')">
+      <i class="fa-solid fa-plus compose__toggle-icon"></i> <span>New Post</span>
+    </button>
+    <div class="compose__drawer">
+      <form method="post" class="compose__form">
+        <div class="compose__field">
+          <label for="title">Title</label>
+          <input type="text" id="title" name="postTitle" minlength="3" maxlength="50" required placeholder="Give your post a title...">
+        </div>
+        <div class="compose__field">
+          <label for="content">Content</label>
+          <textarea name="postContent" id="content" cols="30" rows="5" minlength="5" maxlength="1000" required placeholder="Share your thoughts..."></textarea>
+        </div>
+        <fieldset class="compose__cats">
+          <legend>Categories</legend>
+          <div class="compose__cat-row">
+            <label class="cat-chip cat-chip--ai"><input type="checkbox" name="postCat" value="AI"> AI</label>
+            <label class="cat-chip cat-chip--blockchain"><input type="checkbox" name="postCat" value="Blockchain"> Blockchain</label>
+            <label class="cat-chip cat-chip--cyber"><input type="checkbox" name="postCat" value="Cybersecurity"> Cybersecurity</label>
+            <label class="cat-chip cat-chip--mobile"><input type="checkbox" name="postCat" value="Mobile"> Mobile Dev</label>
+            <label class="cat-chip cat-chip--games"><input type="checkbox" name="postCat" value="Videogames"> Videogames</label>
+          </div>
+        </fieldset>
+        <button type="submit" class="btn-hero btn-hero--primary"><i class="fa-solid fa-paper-plane"></i> Publish</button>
+      </form>
     </div>
-    <fieldset>
-        <legend>Choose which categories your post belongs to:</legend>
-        <div>
-            <input type="checkbox" name="postCat" id="ai" value="AI">
-            <label for="ai">AI</label>
-        </div>
-        <div>
-            <input type="checkbox" name="postCat" id="block" value="Blockchain">
-            <label for="block">Blockchain</label>
-        </div>
-        <div>
-            <input type="checkbox" name="postCat" id="cyber" value="Cybersecurity">
-            <label for="cyber">Cybersecurity</label>
-        </div>
-        <div>
-            <input type="checkbox" name="postCat" id="mob" value="Mobile">
-            <label for="mob">Mobile Development</label>
-        </div>
-        <div>
-            <input type="checkbox" name="postCat" id="games" value="Videogames">
-            <label for="games">Videogames</label>
-        </div>
-    </fieldset>
-    <button type="submit">Post</button>
-</form>
+  </section>
 
-
-<h3>Filter by category</h3>
-<form method="get">
-<label for="category">Please choose a category:</label>
-<select name="category-filter" id="category">
-    <option value="">-Please choose a category</option>
-    <option value="AI">AI</option>
-    <option value="Blockchain">Blockchain</option>
-    <option value="Cybersecurity">Cybersecurity</option>
-    <option value="Mobile">Mobile Development</option>
-    <option value="Videogames">Videogames</option>
-</select>
-<button class="basicButton" type="submit">Filter Results</button>
-</form>
-
-<h3>Filter by author</h3>
-<form method="get">
-    <label for="author">Please choose an author:</label>
-    <select name="author-filter" id="author">
-        <option value="">-Please choose an author</option>
-    {{range .ForumUnames}}
-        <option value="{{.}}">{{.}}</option>
- {{end}}
-    </select>
-    <button type="submit">Filter Results</button>
-</form>
-<h2>Message Board</h2>
-
-{{range .Posts}}
-<div class="forum-post">
-    <form action="/postpage" method="GET">
-        <ul><input type="hidden" name="postdetails" class="titleclass" value={{.PostID}}>
-   <li> <input type="submit" class="postbutton" name="postdetails" value={{.Title}}></li>
-   </ul></form>
-      <form action="/" method="GET">
-        <input type="submit" name="categoryOfPost" class="categoryclass" value={{.Category}}>
-        </form>
-        <p style="white-space: pre-line">{{.Content}}</p>
-    <p class="timeofPost">{{.PostTimeStr}}</p>
-    <p class="authorofPost">by {{.Author}}</p>
-
-     <form method="post">
- 
-     {{if .LikedByCur}}
-     
-        <button type="submit"  name="po-like" class="Liked" value="{{.PostID}}-{{.Likes}}"><i class="fa-solid fa-heart"></i></button>
-        <span>{{.Likes}}</span> 
+  <!-- Filters -->
+  <section class="filter-strip">
+    <div class="filter-strip__group">
+      <form method="get" class="filter-strip__form">
+        <label for="category" class="filter-strip__label"><i class="fa-solid fa-tag"></i> Category</label>
+        <select name="category-filter" id="category" class="filter-strip__select">
+          <option value="">All Categories</option>
+          <option value="AI">AI</option>
+          <option value="Blockchain">Blockchain</option>
+          <option value="Cybersecurity">Cybersecurity</option>
+          <option value="Mobile">Mobile Development</option>
+          <option value="Videogames">Videogames</option>
+        </select>
+        <button class="basicButton" type="submit">Filter</button>
+      </form>
+      <form method="get" class="filter-strip__form">
+        <label for="author" class="filter-strip__label"><i class="fa-solid fa-user"></i> Author</label>
+        <select name="author-filter" id="author" class="filter-strip__select">
+          <option value="">All Authors</option>
+          {{range .ForumUnames}}
+          <option value="{{.}}">{{.}}</option>
+          {{end}}
+        </select>
+        <button type="submit" class="basicButton">Filter</button>
+      </form>
+    </div>
+    <form method="get">
+      <button type="submit" class="btn-clear"><i class="fa-solid fa-rotate-left"></i> Reset</button>
     </form>
- 
-     {{- else}}
-      <button type="submit"  name="po-like" class="Like" value="{{.PostID}}-{{.Likes}}"><i class="fa-solid fa-heart"></i></button>
-        <span>{{.Likes}}</span> 
-    </form>
-    {{- end}}
-{{if .DislikedByCur}}    
-<form method="post">
-        <button type="submit" name="po-dislike" class="Dliked" value="{{.PostID}}-{{.Dislikes}}"><i class="fa-solid fa-heart-crack"></i></button>
-        <span>{{.Dislikes}}</span>
-    </form>
-    {{- else}} 
-    <form method="post"> 
-    <button type="submit" name="po-dislike" class="Dlike" value="{{.PostID}}-{{.Dislikes}}"><i class="fa-solid fa-heart-crack"></i></button>
-        <span>{{.Dislikes}}</span>
-    </form>
-    {{- end}}
+  </section>
+
+  <!-- Board -->
+  <section class="board-section">
+    <h2 class="board-section__title"><i class="fa-solid fa-terminal"></i> Message Board</h2>
+
+    <div class="post-grid">
+    {{range .Posts}}
+      <article class="pcard">
+        <div class="pcard__top">
+          <form action="/postpage" method="GET" class="pcard__title-form">
+            <input type="hidden" name="postdetails" value="{{.PostID}}">
+            <button type="submit" name="postdetails" class="pcard__title" value="{{.Title}}">{{.Title}}</button>
+          </form>
+          <form action="/" method="GET" class="pcard__cat-form">
+            <input type="submit" name="categoryOfPost" class="categoryclass" value="{{.Category}}">
+          </form>
+        </div>
+        <p class="pcard__excerpt" style="white-space: pre-line">{{.Content}}</p>
+        <div class="pcard__bottom">
+          <div class="pcard__meta">
+            <span class="pcard__author"><i class="fa-regular fa-user"></i> {{.Author}}</span>
+            <span class="pcard__time"><i class="fa-regular fa-clock"></i> {{.PostTimeStr}}</span>
+          </div>
+          <div class="pcard__votes">
+            <form method="post" class="pcard__vote-form">
+              {{if .LikedByCur}}
+              <button type="submit" name="po-like" class="Liked" value="{{.PostID}}-{{.Likes}}"><i class="fa-solid fa-heart"></i></button>
+              {{- else}}
+              <button type="submit" name="po-like" class="Like" value="{{.PostID}}-{{.Likes}}"><i class="fa-solid fa-heart"></i></button>
+              {{- end}}
+              <span>{{.Likes}}</span>
+            </form>
+            <form method="post" class="pcard__vote-form">
+              {{if .DislikedByCur}}
+              <button type="submit" name="po-dislike" class="Dliked" value="{{.PostID}}-{{.Dislikes}}"><i class="fa-solid fa-heart-crack"></i></button>
+              {{- else}}
+              <button type="submit" name="po-dislike" class="Dlike" value="{{.PostID}}-{{.Dislikes}}"><i class="fa-solid fa-heart-crack"></i></button>
+              {{- end}}
+              <span>{{.Dislikes}}</span>
+            </form>
+          </div>
+        </div>
+      </article>
+    {{end}}
+    </div>
+
+  </section>
+
 </div>
 
-
-
-
-{{end}}
 {{template "footer"}}

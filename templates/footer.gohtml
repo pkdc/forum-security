@@ -1,11 +1,32 @@
 {{define "footer"}}
-</body>
- <button onclick="topFunction()"  id="myBtn" title="Go to top"><span>Scroll Back Top</span></button>
+
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <div class="site-footer__brand">
+      <span class="site-footer__logo"><i class="fa-solid fa-terminal"></i> GoPulse</span>
+      <p class="site-footer__tagline">Security-hardened forum for the tech community.</p>
+    </div>
+    <div class="site-footer__links">
+      <span class="site-footer__label">Topics</span>
+      <span class="site-footer__tag">AI</span>
+      <span class="site-footer__tag">Blockchain</span>
+      <span class="site-footer__tag">Cybersecurity</span>
+      <span class="site-footer__tag">Mobile</span>
+      <span class="site-footer__tag">Games</span>
+    </div>
+    <div class="site-footer__meta">
+      <span>Built with Go &amp; hardened by default.</span>
+    </div>
+  </div>
+</footer>
+
+<button onclick="topFunction()" id="myBtn" title="Go to top"><span>Scroll Back Top</span></button>
+
 <script>
 const mybutton = document.getElementById("myBtn");
 function topFunction() {
-  document.body.scrollTop = 0; // For Safari
-  document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
 }
 document.addEventListener("click", function(e) {
   var dd = document.querySelector(".dropdown");
@@ -14,5 +35,6 @@ document.addEventListener("click", function(e) {
   }
 });
 </script>
+</body>
 </html>
 {{end}}

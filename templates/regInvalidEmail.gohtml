@@ -5,15 +5,40 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="refresh" content="3; url=/register">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GoPulse</title>
+    <title>GoPulse — Invalid Email</title>
     <link rel="stylesheet" href="/assets/styles.css">
     <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
     <script src="https://kit.fontawesome.com/4e7e922e98.js" crossorigin="anonymous"></script>
 </head>
 <body>
  <div class="navbar">
-  <a href="/">Main Page</a>
-  <a href="login">Login</a>
-  <a href="register">Register</a>
- </div> 
- <h1>Please fill in a valid email...</h1>
+  <a href="/">GoPulse</a>
+  <div class="nav-actions">
+    <a href="/login" class="nav-link-btn"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+    <a href="/register" class="nav-link-btn nav-link-btn--accent"><i class="fa-solid fa-user-plus"></i> Register</a>
+  </div>
+ </div>
+
+ <div class="alert-page">
+   <div class="alert-card alert-card--danger">
+     <div class="alert-card__icon">
+       <i class="fa-solid fa-envelope-circle-exclamation"></i>
+     </div>
+     <h1 class="alert-card__title">Invalid Email</h1>
+     <p class="alert-card__message">The email address you entered is not valid. Please provide a properly formatted email.</p>
+     <div class="alert-card__countdown">
+       <div class="alert-card__bar"></div>
+     </div>
+     <p class="alert-card__redirect">Redirecting to registration in <span class="alert-card__seconds">3</span>s...</p>
+     <a href="/register" class="btn-hero btn-hero--outline alert-card__action"><i class="fa-solid fa-rotate-left"></i> Try Again Now</a>
+   </div>
+ </div>
+
+<script>
+(function() {
+  var s = 3, el = document.querySelector('.alert-card__seconds');
+  var t = setInterval(function() { s--; if (el) el.textContent = s; if (s <= 0) clearInterval(t); }, 1000);
+})();
+</script>
+</body>
+</html>

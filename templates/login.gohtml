@@ -1,14 +1,50 @@
 {{template "header"}}
-<h1>Login:</h1>
-<form action="/login" method="post" class="forum-form">
-    <div>
-        <label for="uname">Username:</label>
-        <input type="text" id="uname" name="username">
+
+<div class="auth-page">
+  <div class="auth-card">
+    <!-- Branded side panel -->
+    <div class="auth-card__brand">
+      <div class="auth-card__brand-inner">
+        <div class="auth-card__pulse-graphic" aria-hidden="true">
+          <div class="hero__ring hero__ring--1"></div>
+          <div class="hero__ring hero__ring--2"></div>
+          <div class="hero__dot"></div>
+        </div>
+        <h2 class="auth-card__brand-title"><i class="fa-solid fa-terminal"></i> GoPulse</h2>
+        <p class="auth-card__brand-tagline">Authenticate to access the secure forum.</p>
+        <div class="auth-card__brand-features">
+          <span><i class="fa-solid fa-shield-halved"></i> Bcrypt-hashed passwords</span>
+          <span><i class="fa-solid fa-lock"></i> UUID session tokens</span>
+          <span><i class="fa-solid fa-bolt"></i> Rate-limited endpoints</span>
+        </div>
+      </div>
     </div>
-    <div>
-        <label for="pw">Password:</label>
-        <input type="password" id="pw" name="password">
+
+    <!-- Form side -->
+    <div class="auth-card__form-side">
+      <div class="auth-card__form-header">
+        <p class="auth-card__eyebrow"><i class="fa-solid fa-right-to-bracket"></i> Returning Agent</p>
+        <h1 class="auth-card__title">Sign In</h1>
+      </div>
+
+      <form action="/login" method="post" class="auth-form">
+        <div class="auth-form__field">
+          <label for="uname"><i class="fa-solid fa-at"></i> Username</label>
+          <input type="text" id="uname" name="username" placeholder="Enter your handle...">
+        </div>
+        <div class="auth-form__field">
+          <label for="pw"><i class="fa-solid fa-key"></i> Password</label>
+          <input type="password" id="pw" name="password" placeholder="Enter your password...">
+        </div>
+
+        <button type="submit" class="btn-hero btn-hero--primary auth-form__submit">
+          <i class="fa-solid fa-right-to-bracket"></i> Login
+        </button>
+      </form>
+
+      <p class="auth-card__alt-link">Don't have an account? <a href="/register">Register</a></p>
     </div>
-    <button type="submit">Login</button>
-</form>
+  </div>
+</div>
+
 {{template "footer"}}

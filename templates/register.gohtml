@@ -1,45 +1,84 @@
 {{template "header"}}
-<h1>Welcome to GoPulse!</h1>
-<h2>Register</h2>
-<form action="/register" method="post" class="forum-form">
-    <div>
-        <label for="uname">Username:</label>
-        <input type="text" id="uname" name="username" minlength="1" maxlength="30" required="required">
-    </div>
-    <div><label for="email">Email:</label><input type="email" id="email" name="email" required="required"></div>
-    <div><label for="pw">Password:</label><input type="password" id="pw" name="password" minlength="6"></div>
-   
-    <label>
-    <input type="radio" id="bluePic" name="ProfilePic" value="assets/profilePics/blue.png">
-    <img src="assets/profilePics/blue.png">
-    </label>
-  
-   <label>
-    <input type="radio" id="greenPic" name="ProfilePic" value="assets/profilePics/green.png">
-   <img src="assets/profilePics/green.png">
-   </label>
-  
-  <label>
-    <input type="radio" id="pinkPic" name="ProfilePic" value="assets/profilePics/pink.png">
-    <img src="assets/profilePics/pink.png" >
-    </label>
-  
-   <label>
-    <input type="radio" id="purplePic" name="ProfilePic" value="assets/profilePics/purple.png">
-    <img src="assets/profilePics/purple.png" >
-    </label>
-  
-    <label>
-    <input type="radio" id="redPic" name="ProfilePic" value="assets/profilePics/red.png">
-   <img src="assets/profilePics/red.png" >
-   </label>
-  
-   <label>
-    <input type="radio" id="yellowPic" name="ProfilePic" value="assets/profilePics/yellow.png">
-    <img src="assets/profilePics/yellow.png" >
-    </label>
-  
 
-<button type="submit">Register</button>
-</form>
+<div class="auth-page">
+  <div class="auth-card">
+    <!-- Branded side panel -->
+    <div class="auth-card__brand">
+      <div class="auth-card__brand-inner">
+        <div class="auth-card__pulse-graphic" aria-hidden="true">
+          <div class="hero__ring hero__ring--1"></div>
+          <div class="hero__ring hero__ring--2"></div>
+          <div class="hero__dot"></div>
+        </div>
+        <h2 class="auth-card__brand-title"><i class="fa-solid fa-terminal"></i> GoPulse</h2>
+        <p class="auth-card__brand-tagline">Request security clearance to join the community.</p>
+        <div class="auth-card__brand-features">
+          <span><i class="fa-solid fa-shield-halved"></i> Bcrypt-hashed passwords</span>
+          <span><i class="fa-solid fa-lock"></i> UUID session tokens</span>
+          <span><i class="fa-solid fa-bolt"></i> Rate-limited endpoints</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form side -->
+    <div class="auth-card__form-side">
+      <div class="auth-card__form-header">
+        <p class="auth-card__eyebrow"><i class="fa-solid fa-user-plus"></i> New Agent</p>
+        <h1 class="auth-card__title">Create Account</h1>
+      </div>
+
+      <form action="/register" method="post" class="auth-form">
+        <div class="auth-form__field">
+          <label for="uname"><i class="fa-solid fa-at"></i> Username</label>
+          <input type="text" id="uname" name="username" minlength="1" maxlength="30" required="required" placeholder="Choose a handle...">
+        </div>
+        <div class="auth-form__field">
+          <label for="email"><i class="fa-solid fa-envelope"></i> Email</label>
+          <input type="email" id="email" name="email" required="required" placeholder="agent@example.com">
+        </div>
+        <div class="auth-form__field">
+          <label for="pw"><i class="fa-solid fa-key"></i> Password</label>
+          <input type="password" id="pw" name="password" minlength="6" placeholder="Min 6 characters">
+        </div>
+
+        <div class="auth-form__avatars">
+          <label class="auth-form__avatars-label"><i class="fa-solid fa-id-badge"></i> Select Avatar</label>
+          <div class="avatar-grid">
+            <label class="avatar-option">
+              <input type="radio" id="bluePic" name="ProfilePic" value="assets/profilePics/blue.png">
+              <img src="assets/profilePics/blue.png" alt="Blue avatar">
+            </label>
+            <label class="avatar-option">
+              <input type="radio" id="greenPic" name="ProfilePic" value="assets/profilePics/green.png">
+              <img src="assets/profilePics/green.png" alt="Green avatar">
+            </label>
+            <label class="avatar-option">
+              <input type="radio" id="pinkPic" name="ProfilePic" value="assets/profilePics/pink.png">
+              <img src="assets/profilePics/pink.png" alt="Pink avatar">
+            </label>
+            <label class="avatar-option">
+              <input type="radio" id="purplePic" name="ProfilePic" value="assets/profilePics/purple.png">
+              <img src="assets/profilePics/purple.png" alt="Purple avatar">
+            </label>
+            <label class="avatar-option">
+              <input type="radio" id="redPic" name="ProfilePic" value="assets/profilePics/red.png">
+              <img src="assets/profilePics/red.png" alt="Red avatar">
+            </label>
+            <label class="avatar-option">
+              <input type="radio" id="yellowPic" name="ProfilePic" value="assets/profilePics/yellow.png">
+              <img src="assets/profilePics/yellow.png" alt="Yellow avatar">
+            </label>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-hero btn-hero--primary auth-form__submit">
+          <i class="fa-solid fa-rocket"></i> Register
+        </button>
+      </form>
+
+      <p class="auth-card__alt-link">Already have an account? <a href="/login">Sign in</a></p>
+    </div>
+  </div>
+</div>
+
 {{template "footer"}}

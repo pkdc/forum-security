@@ -12,16 +12,21 @@
 </head>
 <body>
  <div class="navbar">
-  <a href="/">Main Page</a>
-  <div class="dropdown">
-    <button class="dropbtn" onclick="this.parentElement.classList.toggle('open')">Account <span class="drop-arrow">&#9662;</span></button>
-    <div class="dropdown-content">
-      <a href="NEEDTOCREATE">Posts</a>
-      <form method="get">
-    <button name="liked-post" value="liked-post">See All Liked Post</button>
-</form>
-      <a href="logout">LogOut</a>
+  <a href="/">GoPulse</a>
+  <div class="nav-actions">
+    <div class="dropdown">
+      <button class="dropbtn" onclick="this.parentElement.classList.toggle('open')">
+        <i class="fa-solid fa-user-shield"></i> Account <span class="drop-arrow">&#9662;</span>
+      </button>
+      <div class="dropdown-content">
+        <a href="NEEDTOCREATE"><i class="fa-solid fa-file-lines"></i> My Posts</a>
+        <form method="get">
+          <button name="liked-post" value="liked-post"><i class="fa-solid fa-heart"></i> Liked Posts</button>
+        </form>
+        <div class="dropdown-divider"></div>
+        <a href="logout" class="dropdown-logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> Log Out</a>
+      </div>
     </div>
   </div>
-</div>
-{{end}}   
+ </div>
+{{end}}

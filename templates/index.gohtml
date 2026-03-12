@@ -1,52 +1,85 @@
 
 {{template "header"}}
-<h1>Welcome to GoPulse!</h1>
 
+<div class="page-wrap">
 
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero__inner">
+      <div class="hero__text">
+        <p class="hero__eyebrow"><i class="fa-solid fa-shield-halved"></i> Security-Hardened Forum</p>
+        <h1 class="hero__title">Welcome to <span class="hero__brand">GoPulse</span></h1>
+        <p class="hero__tagline">A community for developers who care about security. Discuss AI, blockchain, cybersecurity, mobile dev, and games.</p>
+        <div class="hero__cta">
+          <a href="/register" class="btn-hero btn-hero--primary"><i class="fa-solid fa-bolt"></i> Join the Discussion</a>
+          <a href="/login" class="btn-hero btn-hero--outline"><i class="fa-solid fa-right-to-bracket"></i> Sign In</a>
+        </div>
+      </div>
+      <div class="hero__graphic" aria-hidden="true">
+        <div class="hero__ring hero__ring--1"></div>
+        <div class="hero__ring hero__ring--2"></div>
+        <div class="hero__ring hero__ring--3"></div>
+        <div class="hero__dot"></div>
+      </div>
+    </div>
+  </section>
 
-
-<h3>Filter by category</h3>
-<form method="get">
-<label for="category">Please choose a category:</label>
-<select name="category-filter" id="category">
-    <option value="">-Please choose a category</option>
-    <option value="AI">AI</option>
-    <option value="Blockchain">Blockchain</option>
-    <option value="Cybersecurity">Cybersecurity</option>
-    <option value="Mobile">Mobile Development</option>
-    <option value="Videogames">Videogames</option>
-</select>
-<button class="basicButton" type="submit">Filter Results</button>
-</form>
-
-<form method="get">
-    <button type="submit">Remove filter</button>
-</form>
-<h2>Message Board</h2>
-
-
-
-{{range .Posts}}
-<div class="forum-post">
-    <form action="/postpage" method="GET">
-        <ul><input type="hidden" name="postdetails" class="titleclass" value={{.PostID}}>
-   <li> <input type="submit" class="postbutton" name="postdetails" value={{.Title}}></li>
-   </ul>
+  <!-- Filters -->
+  <section class="filter-strip">
+    <form method="get" class="filter-strip__form">
+      <label for="category" class="filter-strip__label"><i class="fa-solid fa-tag"></i> Category</label>
+      <select name="category-filter" id="category" class="filter-strip__select">
+        <option value="">All Categories</option>
+        <option value="AI">AI</option>
+        <option value="Blockchain">Blockchain</option>
+        <option value="Cybersecurity">Cybersecurity</option>
+        <option value="Mobile">Mobile Development</option>
+        <option value="Videogames">Videogames</option>
+      </select>
+      <button class="basicButton" type="submit">Filter</button>
     </form>
-    <p class="contentofPost">{{.Content}}</p>
-    <p>{{.Category}}</p>
-    <p>{{.PostTimeStr}}</p>
-    <p>by {{.Author}}</p>
-    <form action="/login" method="GET">
- <button type="submit" id="likebutton" class="Like">
- <i class="fa-solid fa-heart"></i></button>
-        <span>{{.Likes}}</span> 
+    <form method="get">
+      <button type="submit" class="btn-clear"><i class="fa-solid fa-rotate-left"></i> Reset</button>
     </form>
-    <form action="/login" method="GET">
-        <button type="submit" id="Dlikebutton" class="Dlike"><i class="fa-solid fa-heart-crack"></i></button>
-        <span>{{.Dislikes}}</span>
-    </form>
+  </section>
+
+  <!-- Board -->
+  <section class="board-section">
+    <h2 class="board-section__title"><i class="fa-solid fa-terminal"></i> Message Board</h2>
+
+    <div class="post-grid">
+    {{range .Posts}}
+      <article class="pcard">
+        <div class="pcard__top">
+          <form action="/postpage" method="GET" class="pcard__title-form">
+            <input type="hidden" name="postdetails" value="{{.PostID}}">
+            <button type="submit" name="postdetails" class="pcard__title" value="{{.Title}}">{{.Title}}</button>
+          </form>
+          <span class="pcard__category">{{.Category}}</span>
+        </div>
+        <p class="pcard__excerpt">{{.Content}}</p>
+        <div class="pcard__bottom">
+          <div class="pcard__meta">
+            <span class="pcard__author"><i class="fa-regular fa-user"></i> {{.Author}}</span>
+            <span class="pcard__time"><i class="fa-regular fa-clock"></i> {{.PostTimeStr}}</span>
+          </div>
+          <div class="pcard__votes">
+            <form action="/login" method="GET" class="pcard__vote-form">
+              <button type="submit" class="Like"><i class="fa-solid fa-heart"></i></button>
+              <span>{{.Likes}}</span>
+            </form>
+            <form action="/login" method="GET" class="pcard__vote-form">
+              <button type="submit" class="Dlike"><i class="fa-solid fa-heart-crack"></i></button>
+              <span>{{.Dislikes}}</span>
+            </form>
+          </div>
+        </div>
+      </article>
+    {{end}}
+    </div>
+
+  </section>
+
 </div>
 
-{{end}}
 {{template "footer"}}

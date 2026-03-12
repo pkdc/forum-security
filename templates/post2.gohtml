@@ -1,81 +1,98 @@
 
 {{template "header2"}}
 
-
+<div class="page-wrap">
 {{range .Posts}}
-<div class="forum-postPage">
+
+  <article class="forum-postPage">
+    <!-- Author bar -->
+    <div class="post-detail__author-bar">
+      <img src="{{.Image}}" alt="{{.Author}}">
+      <div class="post-detail__author-info">
+        <span class="post-detail__author-name">{{.Author}}</span>
+        <span class="post-detail__time"><i class="fa-regular fa-clock"></i> {{.PostTimeStr}}</span>
+      </div>
+    </div>
+
+    <!-- Title -->
     <p class="titleofPost">{{.Title}}</p>
+
+    <!-- Content -->
     <p class="contentofPost" style="white-space: pre-line">{{.Content}}</p>
-    <form action="/" method="GET">
-        <input type="submit" name="categoryOfPost" class="categoryclass" value={{.Category}}>
+
+    <!-- Footer bar -->
+    <div class="post-detail__footer">
+      <div class="post-detail__meta-row">
+        <form action="/" method="GET">
+          <input type="submit" name="categoryOfPost" class="categoryclass" value="{{.Category}}">
         </form>
-
-  <img  src={{.Image}} alt="ProfilePicture">
-  <span >{{.Author}}</span>
-
-      <p class= "timeOfpost">{{.PostTimeStr}}</p>
-      <p class="views">views:{{.View}}</p>
-      {{if .LikedByCur}}
-    <form method="post">
-        <button type="submit" name="po-like" class="Liked" value="{{.PostID}}-{{.Likes}}"><i class="fa-solid fa-heart"></i></button>
-        <span>{{.Likes}}</span> 
-    </form>
-    {{- else}}
-    <form method="post">
-        <button type="submit" name="po-like" class="Like" value="{{.PostID}}-{{.Likes}}"><i class="fa-solid fa-heart"></i></button>
-        <span>{{.Likes}}</span> 
-    </form>
-{{- end}}
-{{if .DislikedByCur}}
-    <form method="post">
-        <button type="submit" name="po-dislike" class="Dliked" value="{{.PostID}}-{{.Dislikes}}"><i class="fa-solid fa-heart-crack"></i></button>
-        <span>{{.Dislikes}}</span>
-    </form>
-    {{- else}}
-    <form method="post">
-        <button type="submit" name="po-dislike" class="Dlike" value="{{.PostID}}-{{.Dislikes}}"><i class="fa-solid fa-heart-crack"></i></button>
-        <span>{{.Dislikes}}</span>
-    </form>
-     </div>
-     {{- end}}
-    {{range .Comments}}
-     <div class="forum-comment">
-    
-        <p style="white-space: pre-line">{{.Content}}</p>  
-  <span >{{.Author}}</span>
-
-          <p class= "timeOfpost">{{.CommentTimeStr}}</p>
+        <span class="post-detail__views"><i class="fa-solid fa-eye"></i> {{.View}} views</span>
+      </div>
+      <div class="post-detail__actions">
+        <form method="post" class="post-detail__vote-form">
           {{if .LikedByCur}}
-        <form method="post">
-            <button type="submit" name="com-like" class="Liked" value="{{.PostID}}-{{.CommentID}}-{{.Likes}}"><i class="fa-solid fa-heart"></i></button>
-            <span>{{.Likes}}</span>
+          <button type="submit" name="po-like" class="Liked" value="{{.PostID}}-{{.Likes}}"><i class="fa-solid fa-heart"></i></button>
+          {{- else}}
+          <button type="submit" name="po-like" class="Like" value="{{.PostID}}-{{.Likes}}"><i class="fa-solid fa-heart"></i></button>
+          {{- end}}
+          <span>{{.Likes}}</span>
         </form>
-        {{- else}}
-         <form method="post">
-            <button type="submit" name="com-like" class="Like" value="{{.PostID}}-{{.CommentID}}-{{.Likes}}"><i class="fa-solid fa-heart"></i></button>
-            <span>{{.Likes}}</span>
+        <form method="post" class="post-detail__vote-form">
+          {{if .DislikedByCur}}
+          <button type="submit" name="po-dislike" class="Dliked" value="{{.PostID}}-{{.Dislikes}}"><i class="fa-solid fa-heart-crack"></i></button>
+          {{- else}}
+          <button type="submit" name="po-dislike" class="Dlike" value="{{.PostID}}-{{.Dislikes}}"><i class="fa-solid fa-heart-crack"></i></button>
+          {{- end}}
+          <span>{{.Dislikes}}</span>
         </form>
-        {{- end}}
-        {{if .DislikedByCur}}
-        <form method="post">
-            <button type="submit" name="com-dislike" class="Dliked" value="{{.PostID}}-{{.CommentID}}-{{.Dislikes}}"><i class="fa-solid fa-heart-crack"></i></button>
-            <span>{{.Dislikes}}</span>
+      </div>
+    </div>
+  </article>
+
+  <!-- Comments heading -->
+  <div class="comments-section">
+    <h3 class="comments-section__heading"><i class="fa-solid fa-comments"></i> Responses</h3>
+
+    {{range .Comments}}
+    <div class="forum-comment">
+      <div class="comment__header">
+        <span class="comment__author"><i class="fa-regular fa-user"></i> {{.Author}}</span>
+        <span class="comment__time"><i class="fa-regular fa-clock"></i> {{.CommentTimeStr}}</span>
+      </div>
+      <p style="white-space: pre-line">{{.Content}}</p>
+      <div class="comment__actions">
+        <form method="post" class="post-detail__vote-form">
+          {{if .LikedByCur}}
+          <button type="submit" name="com-like" class="Liked" value="{{.PostID}}-{{.CommentID}}-{{.Likes}}"><i class="fa-solid fa-heart"></i></button>
+          {{- else}}
+          <button type="submit" name="com-like" class="Like" value="{{.PostID}}-{{.CommentID}}-{{.Likes}}"><i class="fa-solid fa-heart"></i></button>
+          {{- end}}
+          <span>{{.Likes}}</span>
         </form>
-        {{- else}}
-          <form method="post">
-            <button type="submit" name="com-dislike" class="Dlike" value="{{.PostID}}-{{.CommentID}}-{{.Dislikes}}"><i class="fa-solid fa-heart-crack"></i></button>
-            <span>{{.Dislikes}}</span>
+        <form method="post" class="post-detail__vote-form">
+          {{if .DislikedByCur}}
+          <button type="submit" name="com-dislike" class="Dliked" value="{{.PostID}}-{{.CommentID}}-{{.Dislikes}}"><i class="fa-solid fa-heart-crack"></i></button>
+          {{- else}}
+          <button type="submit" name="com-dislike" class="Dlike" value="{{.PostID}}-{{.CommentID}}-{{.Dislikes}}"><i class="fa-solid fa-heart-crack"></i></button>
+          {{- end}}
+          <span>{{.Dislikes}}</span>
         </form>
-        {{- end}}
-   </div>
+      </div>
+    </div>
     {{end}}
-    <div class="commentInput">
-    <form method="post">
-        <label for="comment">comment: </label>
-        <textarea type="text" id="comment" name="comment" rows="1" cols="30"></textarea>
-        <button type="submit" name="post-id" value="{{.PostID}}">Comment</button>
+  </div>
+
+  <!-- Comment input -->
+  <div class="commentInput">
+    <h3 class="comment-input__heading"><i class="fa-solid fa-pencil"></i> Add a Response</h3>
+    <form method="post" class="comment-input__form">
+      <label for="comment">Your comment</label>
+      <textarea type="text" id="comment" name="comment" rows="4" cols="30" placeholder="Share your thoughts..."></textarea>
+      <button type="submit" name="post-id" value="{{.PostID}}"><i class="fa-solid fa-paper-plane"></i> Comment</button>
     </form>
-</div>
+  </div>
+
 {{end}}
+</div>
 
 {{template "footer"}}
